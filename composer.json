@@ -4,7 +4,8 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.0.2"
+        "php": "^8.0.2",
+        "laravel/framework": "^9.33"
     },
     "autoload": {
         "psr-4": {
@@ -14,7 +15,7 @@
     "authors": [
         {
             "name": "InnoShop",
-            "email": "info@@innoshop.com"
+            "email": "info@innoshop.com"
         }
     ],
     "minimum-stability": "dev"

@@ -37,11 +37,8 @@ class PluginServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (! \Innoshop\Core\installed()) {
-            return;
-        }
-        $manager              = \Innoshop\Core\app('plugin');
-        $this->pluginBasePath = \Innoshop\Core\base_path('plugins');
+        $manager              = app('plugin');
+        $this->pluginBasePath = base_path('plugins');
 
         $allPlugins = $manager->getPlugins();
         foreach ($allPlugins as $plugin) {
@@ -112,7 +109,7 @@ class PluginServiceProvider extends ServiceProvider
         $pluginBasePath = $this->pluginBasePath;
         $adminRoutePath = "{$pluginBasePath}/{$pluginCode}/Routes/admin.php";
         if (file_exists($adminRoutePath)) {
-            $adminName = \Innoshop\Core\admin_name();
+            $adminName = admin_name();
             Route::prefix($adminName)
                 ->name("{$adminName}.")
                 ->middleware(['admin', 'admin_auth:admin'])
