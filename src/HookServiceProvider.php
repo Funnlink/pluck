@@ -12,11 +12,11 @@ namespace Funnlink\Pluck\Hook;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Innoshop\Core\Hook\Console\HookListeners;
+use Funnlink\Pluck\Hook\Console\HookListeners;
 
 class HookServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->commands([
             HookListeners::class,
@@ -27,7 +27,7 @@ class HookServiceProvider extends ServiceProvider
         });
     }
 
-    public function boot()
+    public function boot(): void
     {
         $this->bootHookDirectives();
         $this->bootWrapperHookDirectives();
@@ -37,13 +37,13 @@ class HookServiceProvider extends ServiceProvider
      * Add blade hook directive tag without @endhook
      * Just use @hook('tagname'), then it will insert output to render.
      */
-    protected function bootHookDirectives()
+    protected function bootHookDirectives(): void
     {
         Blade::directive('hook', function ($parameter) {
-            $parameter  = trim($parameter, '()');
+            $parameter = trim($parameter, '()');
             $parameters = explode(',', $parameter);
 
-            $name        = trim($parameters[0], "'");
+            $name = trim($parameters[0], "'");
             $definedVars = $this->parseParameters($parameters);
 
             return ' <?php
@@ -52,8 +52,8 @@ class HookServiceProvider extends ServiceProvider
                 {
                     $__definedVars = [];
                 }
-                '.$definedVars.'
-                $output = \Hook::getHook("'.$name.'",["data"=>$__definedVars],function($data) { return null; });
+                ' . $definedVars . '
+                $output = \Hook::getHook("' . $name . '",["data"=>$__definedVars],function($data) { return null; });
                 if ($output)
                 echo $output;
                 ?>';
@@ -64,15 +64,15 @@ class HookServiceProvider extends ServiceProvider
      * Add blade wrapper hook directive tag with @endhookwrapper
      * Use @hookwrapper('tagname') --- @endhookwrapper, wrapper block output and can be modified to render.
      */
-    protected function bootWrapperHookDirectives()
+    protected function bootWrapperHookDirectives(): void
     {
         Blade::directive('hookwrapper', function ($parameter) {
-            $parameter  = trim($parameter, '()');
+            $parameter = trim($parameter, '()');
             $parameters = explode(',', $parameter);
-            $name       = trim($parameters[0], "'");
+            $name = trim($parameters[0], "'");
 
             return ' <?php
-                    $__hook_name="'.$name.'";
+                    $__hook_name="' . $name . '";
                     ob_start();
                 ?>';
         });
@@ -107,7 +107,7 @@ class HookServiceProvider extends ServiceProvider
             $paraItem = trim($paraItem);
             if (Str::startsWith($paraItem, '$')) {
                 $paraKey = trim($paraItem, '$');
-                $definedVars .= '$__definedVars["'.$paraKey.'"] = $'.$paraKey.';';
+                $definedVars .= '$__definedVars["' . $paraKey . '"] = $' . $paraKey . ';';
             }
         }
 

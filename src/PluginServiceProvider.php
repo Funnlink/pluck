@@ -37,7 +37,7 @@ class PluginServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $manager              = app('plugin');
+        $manager = app('plugin');
         $this->pluginBasePath = base_path('plugins');
 
         $allPlugins = $manager->getPlugins();
@@ -65,7 +65,7 @@ class PluginServiceProvider extends ServiceProvider
      */
     private function bootPlugin($plugin): void
     {
-        $filePath   = $plugin->getBootFile();
+        $filePath = $plugin->getBootFile();
         $pluginCode = $plugin->getDirname();
         if (file_exists($filePath)) {
             $className = "Plugin\\{$pluginCode}\\Bootstrap";
@@ -127,7 +127,7 @@ class PluginServiceProvider extends ServiceProvider
     private function registerShopRoutes($pluginCode): void
     {
         $pluginBasePath = $this->pluginBasePath;
-        $shopRoutePath  = "{$pluginBasePath}/{$pluginCode}/Routes/shop.php";
+        $shopRoutePath = "{$pluginBasePath}/{$pluginCode}/Routes/shop.php";
         if (file_exists($shopRoutePath)) {
             Route::name('shop.')
                 ->middleware('shop')
@@ -165,8 +165,8 @@ class PluginServiceProvider extends ServiceProvider
         $pluginBasePath = $this->pluginBasePath;
         $middlewarePath = "{$pluginBasePath}/{$pluginCode}/Middleware";
 
-        $router           = $this->app['router'];
-        $shopMiddlewares  = $this->loadMiddlewares("$middlewarePath/Shop");
+        $router = $this->app['router'];
+        $shopMiddlewares = $this->loadMiddlewares("$middlewarePath/Shop");
         $adminMiddlewares = $this->loadMiddlewares("$middlewarePath/Admin");
 
         if ($shopMiddlewares) {
@@ -190,16 +190,16 @@ class PluginServiceProvider extends ServiceProvider
      */
     private function loadMiddlewares($path): array
     {
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             return [];
         }
 
         $middlewares = [];
-        $files       = glob("$path/*");
+        $files = glob("$path/*");
         foreach ($files as $file) {
-            $baseName      = basename($file, '.php');
-            $namespacePath = 'Plugin'.dirname(str_replace($this->pluginBasePath, '', $file)).'/';
-            $className     = str_replace('/', '\\', $namespacePath.$baseName);
+            $baseName = basename($file, '.php');
+            $namespacePath = 'Plugin' . dirname(str_replace($this->pluginBasePath, '', $file)) . '/';
+            $className = str_replace('/', '\\', $namespacePath . $baseName);
 
             if (class_exists($className)) {
                 $middlewares[] = $className;
@@ -217,16 +217,16 @@ class PluginServiceProvider extends ServiceProvider
     protected function loadDesignComponents($pluginCode): void
     {
         $pluginBasePath = $this->pluginBasePath;
-        $builderPath    = "{$pluginBasePath}/{$pluginCode}/Admin/View/DesignBuilders/";
+        $builderPath = "{$pluginBasePath}/{$pluginCode}/Admin/View/DesignBuilders/";
 
-        $builders = glob($builderPath.'*');
+        $builders = glob($builderPath . '*');
         foreach ($builders as $builder) {
-            $builderName   = basename($builder, '.php');
-            $aliasName     = Str::snake($builderName);
+            $builderName = basename($builder, '.php');
+            $aliasName = Str::snake($builderName);
             $componentName = Str::studly($builderName);
             $classBaseName = "\\Plugin\\{$pluginCode}\\Admin\\View\\DesignBuilders\\{$componentName}";
 
-            if (! class_exists($classBaseName)) {
+            if (!class_exists($classBaseName)) {
                 throw new \Exception("请先定义自定义模板类 {$classBaseName}");
             }
 

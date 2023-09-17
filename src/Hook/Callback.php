@@ -24,7 +24,7 @@ class Callback
 
     public function setCallback($function, $parameters)
     {
-        $this->function   = $function;
+        $this->function = $function;
         $this->parameters = $parameters;
     }
 

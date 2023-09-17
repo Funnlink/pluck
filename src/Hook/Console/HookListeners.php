@@ -10,7 +10,7 @@
 namespace Funnlink\Pluck\Hook\Console;
 
 use Illuminate\Console\Command;
-use Innoshop\Core\Hook\Facades\Hook;
+use Funnlink\Pluck\Hook\Facades\Hook;
 
 class HookListeners extends Command
 {
@@ -35,7 +35,7 @@ class HookListeners extends Command
      */
     public function handle()
     {
-        $list  = Hook::getListeners();
+        $list = Hook::getListeners();
         $array = [];
 
         foreach ($list as $hook => $lister) {

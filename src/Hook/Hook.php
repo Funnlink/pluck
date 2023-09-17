@@ -27,10 +27,10 @@ class Hook
     /**
      * Return the hook answer.
      *
-     * @param  string  $hook Hook name
-     * @param  array  $params
-     * @param  callable|null  $callback
-     * @param  string  $htmlContent content wrapped by hook
+     * @param string $hook Hook name
+     * @param array $params
+     * @param callable|null $callback
+     * @param string $htmlContent content wrapped by hook
      *
      * @return null|void
      */
@@ -45,7 +45,7 @@ class Hook
 
         $output = $this->run($hook, $params, $callbackObject, $htmlContent);
 
-        if (! $output) {
+        if (!$output) {
             $output = $callbackObject->call();
         }
 
@@ -55,10 +55,10 @@ class Hook
     }
 
     /**
-     * @param  string  $hook
-     * @param  array  $params
-     * @param  callable|null  $callback
-     * @param  string  $htmlContent
+     * @param string $hook
+     * @param array $params
+     * @param callable|null $callback
+     * @param string $htmlContent
      * @return string|null
      */
     public function getHook(string $hook, array $params = [], callable $callback = null, string $htmlContent = ''): ?string
@@ -71,10 +71,10 @@ class Hook
     }
 
     /**
-     * @param  string  $hook
-     * @param  array  $params
-     * @param  callable|null  $callback
-     * @param  string  $htmlContent
+     * @param string $hook
+     * @param array $params
+     * @param callable|null $callback
+     * @param string $htmlContent
      * @return string|null
      */
     public function getWrapper(string $hook, array $params = [], callable $callback = null, string $htmlContent = ''): ?string
@@ -89,7 +89,7 @@ class Hook
     /**
      * Stop all another hook running.
      *
-     * @param  string  $hook Hook name
+     * @param string $hook Hook name
      */
     public function stop(string $hook): void
     {
@@ -99,7 +99,7 @@ class Hook
     /**
      * Subscribe to hook.
      *
-     * @param  string  $hook Hook name
+     * @param string $hook Hook name
      * @param $priority
      * @param $function
      */
@@ -115,20 +115,20 @@ class Hook
             $this->watch[$hook] = [];
         }
 
-        if (! is_numeric($priority)) {
+        if (!is_numeric($priority)) {
             $priority = null;
         }
 
         if (isset($this->watch[$hook][$priority])) {
             $maxPriority = max(array_keys($this->watch[$hook]));
-            $priority    = $maxPriority + 1;
+            $priority = $maxPriority + 1;
         }
 
         $this->watch[$hook][$priority] = [
             'function' => $function,
-            'caller'   => [
-                'file'  => $caller['file'],
-                'line'  => $caller['line'],
+            'caller' => [
+                'file' => $caller['file'],
+                'line' => $caller['line'],
                 'class' => Arr::get($caller, 'class'),
             ],
         ];
@@ -152,7 +152,7 @@ class Hook
     /**
      * Return all listeners for hook.
      *
-     * @param  string  $hook
+     * @param string $hook
      *
      * @return array
      */
@@ -170,19 +170,19 @@ class Hook
     /**
      * For testing.
      *
-     * @param  string  $name Hook name
-     * @param  mixed  $return Answer
+     * @param string $name Hook name
+     * @param mixed $return Answer
      */
     public function mock(string $name, mixed $return)
     {
-        $this->testing     = true;
+        $this->testing = true;
         $this->mock[$name] = ['return' => $return];
     }
 
     /**
      * Return the mock value.
      *
-     * @param  string  $hook Hook name
+     * @param string $hook Hook name
      */
     protected function returnMockIfDebugModeAndMockExists(string $hook)
     {
@@ -201,8 +201,8 @@ class Hook
     /**
      * Return a new callback object.
      *
-     * @param  callable  $callback function
-     * @param  array  $params parameters
+     * @param callable $callback function
+     * @param array $params parameters
      *
      * @return callable
      */
@@ -214,10 +214,10 @@ class Hook
     /**
      * Run hook events.
      *
-     * @param  string  $hook Hook name
-     * @param  array  $params Parameters
-     * @param  callable  $callback Callback object
-     * @param  string|null  $output html wrapped by hook
+     * @param string $hook Hook name
+     * @param array $params Parameters
+     * @param callable $callback Callback object
+     * @param string|null $output html wrapped by hook
      *
      * @return mixed
      */
@@ -229,13 +229,13 @@ class Hook
         if (array_key_exists($hook, $this->watch)) {
             if (is_array($this->watch[$hook])) {
                 foreach ($this->watch[$hook] as $function) {
-                    if (! empty($this->stop[$hook])) {
+                    if (!empty($this->stop[$hook])) {
                         unset($this->stop[$hook]);
 
                         break;
                     }
 
-                    $output    = call_user_func_array($function['function'], $params);
+                    $output = call_user_func_array($function['function'], $params);
                     $params[1] = $output;
                 }
             }

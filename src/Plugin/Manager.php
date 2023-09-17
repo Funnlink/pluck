@@ -34,15 +34,15 @@ class Manager
      */
     public function getPlugins(): Collection
     {
-        if (! empty($this->plugins)) {
+        if (!empty($this->plugins)) {
             return $this->plugins;
         }
 
         $existed = $this->getPluginsConfig();
         $plugins = new Collection();
         foreach ($existed as $dirname => $package) {
-            $pluginPath = $this->getBaseDir().DIRECTORY_SEPARATOR.$dirname;
-            $plugin     = new Plugin($pluginPath, $package);
+            $pluginPath = $this->getBaseDir() . DIRECTORY_SEPARATOR . $dirname;
+            $plugin = new Plugin($pluginPath, $package);
             $plugin->setType(Arr::get($package, 'type'));
             $plugin->setDirname($dirname);
             $plugin->setName(Arr::get($package, 'name'));

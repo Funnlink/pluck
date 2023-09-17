@@ -46,7 +46,7 @@ class Plugin
 
     public function __construct(string $path, array $packageInfo)
     {
-        $this->path        = $path;
+        $this->path = $path;
         $this->packageInfo = $packageInfo;
     }
 
@@ -72,8 +72,8 @@ class Plugin
      */
     public function setType(string $type): self
     {
-        if (! in_array($type, self::TYPES)) {
-            throw new Exception('Invalid plugin type, must be one of '.implode(',', self::TYPES));
+        if (!in_array($type, self::TYPES)) {
+            throw new Exception('Invalid plugin type, must be one of ' . implode(',', self::TYPES));
         }
         $this->type = $type;
 
@@ -110,8 +110,8 @@ class Plugin
 
     public function setColumns(): self
     {
-        $columnsPath = $this->path.DIRECTORY_SEPARATOR.'columns.php';
-        if (! file_exists($columnsPath)) {
+        $columnsPath = $this->path . DIRECTORY_SEPARATOR . 'columns.php';
+        if (!file_exists($columnsPath)) {
             return $this;
         }
         $this->columns = require_once $columnsPath;
@@ -136,16 +136,16 @@ class Plugin
     private function transLabel($item): mixed
     {
         $labelKey = $item['label_key'] ?? '';
-        $label    = $item['label']     ?? '';
+        $label = $item['label'] ?? '';
         if (empty($label) && $labelKey) {
-            $languageKey   = "$this->dirName::$labelKey";
+            $languageKey = "$this->dirName::$labelKey";
             $item['label'] = trans($languageKey);
         }
 
         $descriptionKey = $item['description_key'] ?? '';
-        $description    = $item['description']     ?? '';
+        $description = $item['description'] ?? '';
         if (empty($description) && $descriptionKey) {
-            $languageKey         = "$this->dirName::$descriptionKey";
+            $languageKey = "$this->dirName::$descriptionKey";
             $item['description'] = trans($languageKey);
         }
 
@@ -169,7 +169,7 @@ class Plugin
             return array_values($this->name)[0];
         }
 
-        return (string) $this->name;
+        return (string)$this->name;
     }
 
     public function getDescription(): string
@@ -229,12 +229,12 @@ class Plugin
     public function getColumns(): array
     {
         $this->columns[] = SettingRepo::getPluginStatusColumn();
-        $existValues     = SettingRepo::getPluginColumns($this->code);
+        $existValues = SettingRepo::getPluginColumns($this->code);
         foreach ($this->columns as $index => $column) {
             $dbColumn = $existValues[$column['name']] ?? null;
-            $value    = $dbColumn ? $dbColumn->value : null;
+            $value = $dbColumn ? $dbColumn->value : null;
             if ($column['name'] == 'status') {
-                $value = (int) $value;
+                $value = (int)$value;
             }
             $this->columns[$index]['value'] = $value;
         }
@@ -255,7 +255,7 @@ class Plugin
      */
     public function getColumnView(): string
     {
-        $viewFile = $this->getPath().'/Views/admin/config.blade.php';
+        $viewFile = $this->getPath() . '/Views/admin/config.blade.php';
         if (file_exists($viewFile)) {
             return "$this->dirName::admin.config";
         }
@@ -265,15 +265,15 @@ class Plugin
 
     public function getBootFile(): string
     {
-        return $this->getPath().'/Init.php';
+        return $this->getPath() . '/Init.php';
     }
 
     public function toArray(): array
     {
-        return (array) array_merge([
-            'name'    => $this->name,
+        return (array)array_merge([
+            'name' => $this->name,
             'version' => $this->getVersion(),
-            'path'    => $this->path,
+            'path' => $this->path,
         ], $this->packageInfo);
     }
 }
