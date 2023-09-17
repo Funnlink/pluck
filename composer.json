@@ -12,6 +12,14 @@
             "Funnlink\\Pluck\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Innoshop\\Core\\ShopServiceProvider",
+                "Innoshop\\Core\\PluginServiceProvider"
+            ]
+        }
+    },
     "authors": [
         {
             "name": "InnoShop",

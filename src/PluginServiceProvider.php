@@ -7,12 +7,12 @@
  * @license    https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
+namespace Funnlink\Pluck;
 
-use Exception;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Innoshop\Core\Plugin\Manager;
+use Funnlink\Pluck\Plugin\Manager;
 
 class PluginServiceProvider extends ServiceProvider
 {
@@ -33,7 +33,7 @@ class PluginServiceProvider extends ServiceProvider
     /**
      * Bootstrap Plugin Service Provider
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function boot(): void
     {
@@ -212,7 +212,7 @@ class PluginServiceProvider extends ServiceProvider
     /**
      * Load design page builder components from plugins
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function loadDesignComponents($pluginCode): void
     {
@@ -227,7 +227,7 @@ class PluginServiceProvider extends ServiceProvider
             $classBaseName = "\\Plugin\\{$pluginCode}\\Admin\\View\\DesignBuilders\\{$componentName}";
 
             if (! class_exists($classBaseName)) {
-                throw new Exception("请先定义自定义模板类 {$classBaseName}");
+                throw new \Exception("请先定义自定义模板类 {$classBaseName}");
             }
 
             $this->loadViewComponentsAs('editor', [
